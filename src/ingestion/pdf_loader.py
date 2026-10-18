@@ -13,7 +13,7 @@ class PDFIngestionNode:
     def __init__(self):
         pass
 
-    def load_pdf(self, file_path: str) -> List[Dict[str, Any]]:
+    def load_pdf(self, file_path: str, max_pages: int = None) -> List[Dict[str, Any]]:
         """
         Parses a PDF file and returns a list of page objects with text and metadata.
         """
@@ -33,7 +33,8 @@ class PDFIngestionNode:
             import fitz
             doc = fitz.open(file_path)
             total_pages = len(doc)
-            for page_index in range(total_pages):
+            pages_to_read = min(total_pages, max_pages) if max_pages and max_pages > 0 else total_pages
+            for page_index in range(pages_to_read):
                 page = doc[page_index]
                 text = page.get_text("text").strip()
                 if text:
@@ -61,7 +62,9 @@ class PDFIngestionNode:
             import pdfplumber
             with pdfplumber.open(file_path) as pdf:
                 total_pages = len(pdf.pages)
-                for page_index, page in enumerate(pdf.pages):
+                pages_to_read = min(total_pages, max_pages) if max_pages and max_pages > 0 else total_pages
+                for page_index in range(pages_to_read):
+                    page = pdf.pages[page_index]
                     text = page.extract_text()
                     if text and text.strip():
                         pages_data.append({
@@ -87,7 +90,8 @@ class PDFIngestionNode:
             import pypdfium2 as pdfium
             pdf = pdfium.PdfDocument(file_path)
             total_pages = len(pdf)
-            for page_index in range(total_pages):
+            pages_to_read = min(total_pages, max_pages) if max_pages and max_pages > 0 else total_pages
+            for page_index in range(pages_to_read):
                 page = pdf[page_index]
                 textpage = page.get_textpage()
                 text = textpage.get_text_range()

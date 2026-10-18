@@ -1,0 +1,38 @@
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables & secrets
+.env
+.env.local
+.env.*.local
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Testing & caches
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local Vector Database & Audio artifacts
+data/qdrant_db/
+data/audio/
+data/*.pdf
+data/*.wav
+data/*.mp3
+data/temp*
+
+# Keep data folder structure
+!data/
+!data/benchmark_results.json
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
